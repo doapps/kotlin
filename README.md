@@ -1,8 +1,18 @@
 # kotlin
 DOAPPS Kotlin Style Guide
 
+# Table of Contents
+
+1. [Naming conventions](#naming-conventions)
+1. [Espaciados](#espaciados)
+1. [Saltos de linea](#saltos-de-linea)
+
 ## Naming conventions
+
+### Clases
+
 * Utilice la notación `PascalCase` si desea nombrar una `clase`.
+
 ```kt
 //bad
 class mainActivity {
@@ -14,6 +24,22 @@ class MainActivity {
 
 }
 ```
+* No utilice `verbos` si desea nombrar una `clase`.
+* Tambien evite usar `Manager`, `Processor`, `Data`, `Info` en el nombre de la `clase`.
+```kt
+//bad
+class GetDataConverters {
+
+}
+
+//good
+class TypeConverters {
+
+}
+```
+
+### Interfaces
+
 * Utilice la notación `PascalCase` si desea nombrar una `interface`.
 ```kt
 //bad
@@ -26,6 +52,8 @@ interface LocalDataSource {
 
 }
 ```
+### Funciones
+
 * Utilice la notación `camelCase` si desea nombrar una `función`.
 ```kt
 //bad
@@ -38,6 +66,33 @@ fun getPopularMovies() {
 
 }
 ```
+* Utilize  `verbos` al nombrar un `función` que demuestre el motivo de su creación.
+
+```kt
+//bad
+fun stringToList() {
+
+}
+
+//good
+fun convertStringToList() {
+
+}
+```
+* No se recomienda usar  `verbos` muy rebuscados, esto complicará al entendimiento de su código.
+```kt
+//bad
+fun expungeMovieById() {
+
+}
+
+//good
+fun deleteMovieById() {
+
+}
+```
+### Variables
+
 * Utilice la notación `camelCase` si desea nombrar una `variable`.
 ```kt
 //bad
@@ -48,6 +103,27 @@ val TitleHeader = "Hola mundo"
 val userService = UserService()
 val titleHeader = "Hola mundo"
 
+```
+* Utilice palabras que describan las intenciones si desea nombrar una `variable` .
+```kt
+//bad
+val a = 10
+var b = 1
+for(x in 1..a){
+    b *= x
+}
+println("El factorial de $a es : $b")
+
+//good
+val numFactorial = 10
+
+var resultFactorial = 1
+
+for(index in 1..numFactorial){
+    resultFactorial *= index
+}
+
+println("El factorial de $numFactorial es : $resultFactorial")
 ```
 
 ## Espaciados
