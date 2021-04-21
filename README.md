@@ -236,3 +236,13 @@ class MediaAdapter(
 }
 ```
 
+## Número de lineas de código y parametros
+¿Se imaginan una Clase con mas de 2000 o 3000 lineas de código? Lo mas probable esque esta clase este violando mas de un principio SOLID y en particular el de responsabilidad unica. Las clases, archivos y funciones con muchas lineas de código son dificiles de leer y por lo tanto dificiles de mantener.
+
+En nuestro esfuerzo de encontrar datos o estudios que respalden cuantas lineas como maximo debería tener una clase, archivo ó función, encontramos una opinion de un Google Developer Expert en Android - Antonio Leiva, Antonio nos comparte números referentes según su basta experiencia en el mundo Android, para esta guia lo llamaremos el metodo 666 y se establece de la siguiente forma:
+
+- Clases -> `600` lineas de código como máximo
+- Funciones -> `60` lineas de código como máximo
+- Parametros -> `6` parametros como máximo
+
+Desde luego estos números son relativos, si pasamos estos números se recomienda verificar si la clase, función o los numeros de parametros presentes pueden ser refactorizados. Recordemos que es buena practica mantener la responsabilidad única tanto en clases como funciones.
