@@ -1,5 +1,4 @@
-# kotlin
-DOAPPS Kotlin Style Guide
+# DOAPPS Kotlin Style Guide
 
 # Table of Contents
 
@@ -28,12 +27,12 @@ class MainActivity {
 * Tambien evite usar `Manager`, `Processor`, `Data`, `Info` en el nombre de la `clase`.
 ```kt
 //bad
-class GetDataConverters {
+class GetDataConverter {
 
 }
 
 //good
-class TypeConverters {
+class TypeConverter {
 
 }
 ```
