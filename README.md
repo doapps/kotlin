@@ -125,6 +125,39 @@ for(index in 1..numFactorial){
 println("El factorial de $numFactorial es : $resultFactorial")
 ```
 
+### Constantes
+* Utilice la notación `UPPER_SNAKE_CASE` si desea nombrar una `clase`.
+
+```kt
+//bad
+const val locationRegion = "PE"
+
+//good
+const val LOCATION_REGION = "PE"
+```
+* Si pasamos `extras` mediante `intents`, se recomienda establecerlo como una constante y establecerlo segun el nombre de la actividad receptora, seguido de `:` y el nombre del extra que se enviará.
+
+```kt
+//bad
+class DetailActivity : AppCompatActivity() {
+
+    companion object {
+        val EXTRA_ID = "id"
+    }
+
+    // ..
+}
+
+//good
+class DetailActivity : AppCompatActivity() {
+
+    companion object {
+        const val EXTRA_ID = "DetailActivity:id"
+    }
+
+    // ..
+}
+```
 ## Espaciados
 Al igual que un parrafo de un libro, siempre agregar, un espacio luego de una coma `','`  
 
