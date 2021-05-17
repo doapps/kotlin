@@ -2,355 +2,407 @@
 
 # Table of Contents
 
-1. [Naming conventions](#naming-conventions)
-1. [Espaciados](#espaciados)
-1. [Saltos de linea](#saltos-de-linea)
+- [Nomenclature](#nomenclature)
+  + [Packages](#packages)
+  + [Classes & Interfaces](#classes--interfaces)
+  + [Methods](#methods)
+  + [Fields](#fields)
+  + [Variables & Parameters](#variables--parameters)
+  + [Misc](#misc)
+- [Declarations](#declarations)
+  + [Visibility Modifiers](#visibility-modifiers)
+  + [Fields & Variables](#fields--variables)
+  + [Classes](#classes)
+  + [Data Type Objects](#data-type-objects)
+  + [Enum Classes](#enum-classes)
+- [Spacing](#spacing)
+  + [Indentation](#indentation)
+  + [Line Length](#line-length)
+  + [Vertical Spacing](#vertical-spacing)
+- [Semicolons](#semicolons)
+- [Getters & Setters](#getters--setters)
+- [Brace Style](#brace-style)
+- [When Statements](#when-statements)
+- [Annotations](#annotations)
+- [Types](#types)
+  + [Type Inference](#type-inference)
+  + [Constants vs. Variables](#constants-vs-variables)
+  + [Companion Objects](#companion-objects)
+  + [Optionals](#optionals)
+- [Language](#language)
 
-## Naming conventions
+## Nomenclature
 
-### Clases
+On the whole, naming should follow Java standards, as Kotlin is a JVM-compatible language.
 
-* Utilice la notación `PascalCase` si desea nombrar una `clase`.
+### Packages
 
-```kt
-//bad
-class mainActivity {
+Package names are similar to Java: all __lower-case__, multiple words concatenated together, without hypens or underscores:
 
-}
+__BAD__:
 
-//good
-class MainActivity {
-
-}
-```
-* No utilice `verbos` si desea nombrar una `clase`.
-* Tambien evite usar `Manager`, `Processor`, `Data`, `Info` en el nombre de la `clase`.
-```kt
-//bad
-class GetDataConverter {
-
-}
-
-//good
-class TypeConverter {
-
-}
-```
-
-### Interfaces
-
-* Utilice la notación `PascalCase` si desea nombrar una `interface`.
-```kt
-//bad
-interface localDataSource {
-
-}
-
-//good
-interface LocalDataSource {
-
-}
-```
-### Funciones
-
-* Utilice la notación `camelCase` si desea nombrar una `función`.
-```kt
-//bad
-fun GetPopularMovies() {
-
-}
-
-//good
-fun getPopularMovies() {
-
-}
-```
-* Utilize  `verbos` al nombrar un `función` que demuestre el motivo de su creación.
-
-```kt
-//bad
-fun stringToList() {
-
-}
-
-//good
-fun convertStringToList() {
-
-}
-```
-* No se recomienda usar  `verbos` muy rebuscados, esto complicará al entendimiento de su código.
-```kt
-//bad
-fun expungeMovieById() {
-
-}
-
-//good
-fun deleteMovieById() {
-
-}
-```
-### Variables
-
-* Utilice la notación `camelCase` si desea nombrar una `variable`.
-```kt
-//bad
-val UserService = UserService()
-val TitleHeader = "Hola mundo"
-
-//good
-val userService = UserService()
-val titleHeader = "Hola mundo"
-
-```
-* Utilice palabras que describan las intenciones si desea nombrar una `variable` .
-```kt
-//bad
-val a = 10
-var b = 1
-for(x in 1..a){
-    b *= x
-}
-println("El factorial de $a es : $b")
-
-//good
-val numFactorial = 10
-
-var resultFactorial = 1
-
-for(index in 1..numFactorial){
-    resultFactorial *= index
-}
-
-println("El factorial de $numFactorial es : $resultFactorial")
+```kotlin
+com.RayWenderlich.funky_widget
 ```
 
-### Constantes
-* Utilice la notación `UPPER_SNAKE_CASE` si desea nombrar una `clase`.
+__GOOD__:
 
-```kt
-//bad
-const val locationRegion = "PE"
-
-//good
-const val LOCATION_REGION = "PE"
+```kotlin
+com.raywenderlich.funkywidget
 ```
-* Si pasamos `extras` mediante `intents`, se recomienda establecerlo como una constante y establecerlo segun el nombre de la actividad receptora, seguido de `:` y el nombre del extra que se enviará.
 
-```kt
-//bad
-class DetailActivity : AppCompatActivity() {
+### Classes & Interfaces
 
-    companion object {
-        val EXTRA_ID = "id"
+Written in __UpperCamelCase__. For example `RadialSlider`. 
+
+### Methods
+
+Written in __lowerCamelCase__. For example `setValue`.
+
+### Fields
+
+Generally, written in __lowerCamelCase__. Fields should **not** be named with Hungarian notation, as Hungarian notation is [erroneously thought](http://jakewharton.com/just-say-no-to-hungarian-notation/) to be recommended by Google.
+
+Example field names:
+
+```kotlin
+class MyClass {
+  var publicField: Int = 0
+  val person = Person()
+  private var privateField: Int?
+}
+```
+
+Constant values in the companion object should be written in __uppercase__, with an underscore separating words:
+
+```kotlin
+companion object {
+  const val THE_ANSWER = 42
+}
+```
+
+### Variables & Parameters
+
+Written in __lowerCamelCase__.
+
+Single character values must be avoided, except for temporary looping variables.
+
+### Misc
+
+In code, acronyms should be treated as words. For example:
+
+__BAD:__
+
+```kotlin
+XMLHTTPRequest
+URL: String? 
+findPostByID
+```
+__GOOD:__
+
+```kotlin
+XmlHttpRequest
+url: String
+findPostById
+```
+
+## Declarations
+
+### Visibility Modifiers
+
+Only include visibility modifiers if you need something other than the default of public.
+
+**BAD:**
+
+```kotlin
+public val wideOpenProperty = 1
+private val myOwnPrivateProperty = "private"
+```
+
+**GOOD:**
+
+```kotlin
+val wideOpenProperty = 1
+private val myOwnPrivateProperty = "private"
+```
+
+### Access Level Modifiers
+
+Access level modifiers should be explicitly defined for classes, methods and member variables.
+
+### Fields & Variables
+
+Prefer single declaration per line.
+
+__GOOD:__
+
+```kotlin
+username: String
+twitterHandle: String
+```
+
+### Classes
+
+Exactly one class per source file, although inner classes are encouraged where scoping appropriate.
+
+### Data Type Objects
+
+Prefer data classes for simple data holding objects.
+
+__BAD:__
+
+```kotlin
+class Person(val name: String) {
+  override fun toString() : String {
+    return "Person(name=$name)"
+  }
+}
+```
+
+__GOOD:__
+
+```kotlin
+data class Person(val name: String)
+```
+
+### Enum Classes
+
+Enum classes without methods may be formatted without line-breaks, as follows:
+
+```kotlin
+private enum CompassDirection { EAST, NORTH, WEST, SOUTH }
+```
+
+## Spacing
+
+Spacing is especially important in raywenderlich.com code, as code needs to be easily readable as part of the tutorial. 
+
+### Indentation
+
+Indentation is using spaces - never tabs.
+
+#### Blocks
+
+Indentation for blocks uses 2 spaces (not the default 4):
+
+__BAD:__
+
+```kotlin
+for (i in 0..9) {
+    Log.i(TAG, "index=" + i)
+}
+```
+
+__GOOD:__
+
+```kotlin
+for (i in 0..9) {
+  Log.i(TAG, "index=" + i)
+}
+```
+
+#### Line Wraps
+
+Indentation for line wraps should use 4 spaces (not the default 8):
+
+__BAD:__
+
+```kotlin
+val widget: CoolUiWidget =
+        someIncrediblyLongExpression(that, reallyWouldNotFit, on, aSingle, line)
+```
+
+__GOOD:__
+
+```kotlin
+val widget: CoolUiWidget =
+    someIncrediblyLongExpression(that, reallyWouldNotFit, on, aSingle, line)
+```
+
+### Line Length
+
+Lines should be no longer than 100 characters long.
+
+
+### Vertical Spacing
+
+There should be exactly one blank line between methods to aid in visual clarity and organization. Whitespace within methods should separate functionality, but having too many sections in a method often means you should refactor into several methods.
+
+## Comments
+
+When they are needed, use comments to explain **why** a particular piece of code does something. Comments must be kept up-to-date or deleted.
+
+Avoid block comments inline with code, as the code should be as self-documenting as possible. *Exception: This does not apply to those comments used to generate documentation.*
+
+
+## Semicolons
+
+Semicolons ~~are dead to us~~ should be avoided wherever possible in Kotlin. 
+
+__BAD__:
+
+```kotlin
+val horseGiftedByTrojans = true;
+if (horseGiftedByTrojans) {
+  bringHorseIntoWalledCity();
+}
+```
+
+__GOOD__:
+
+```kotlin
+val horseGiftedByTrojans = true
+if (horseGiftedByTrojans) {
+  bringHorseIntoWalledCity()
+}
+```
+
+## Getters & Setters
+
+Unlike Java, direct access to fields in Kotlin is preferred. 
+
+If custom getters and setters are required, they should be declared [following Kotlin conventions](https://kotlinlang.org/docs/reference/properties.html) rather than as separate methods.
+
+## Brace Style
+
+Only trailing closing-braces are awarded their own line. All others appear the same line as preceding code:
+
+__BAD:__
+
+```kotlin
+class MyClass
+{
+  fun doSomething()
+  {
+    if (someTest)
+    {
+      // ...
     }
-
-    // ..
-}
-
-//good
-class DetailActivity : AppCompatActivity() {
-
-    companion object {
-        const val EXTRA_ID = "DetailActivity:id"
+    else
+    {
+      // ...
     }
-
-    // ..
-}
-```
-## Espaciados
-Al igual que un parrafo de un libro, siempre agregar, un espacio luego de una coma `','`  
-
-### Clases
-
-* Agregar un espacio al terminar de definir el nombre de la clase
-```kt
-//bad
-class MainActivity{
-
-}
-
-//good
-class MainActivity {
-
-}
-```
-* Para `clases con constructores`, agregar un espacio luego de los `:` para definir el tipo y luego de las `,`
-```kt
-//bad
-class MainActivity(val user:User,val repository: Repository){
-
-}
-
-//good
-class MainActivity(val user: User, val repository: Repository) {
-
-}
-```
-* Para `clases con lambdas`, agregar un espacio antes y despues de `->`
-```kt
-//bad
-class MainActivity(val user:User,private val listener: (User)->Unity){
-
-}
-
-//good
-class MainActivity(val user: User, private val listener: (User) -> Unity) {
-
-}
-```
-* Para `Herencias`, agregar un espacio antes y despues de los `:`
-```kt
-//bad
-class MainActivity: AppCompatActivity() {
-
-}
-
-//good
-class MainActivity : AppCompatActivity() {
-
+  }
 }
 ```
 
-### Objetos
-* Para `Objetos con argumentos` agregar un espacio luego de los `:` para definir el tipo 
-```kt
-//bad
-val userService = UserServie(val context:Context)
+__GOOD:__
 
-//good
-val userService = UserServie(val context: Context)
-
-```
-
-### Funciones
-* Para `Funciones con valores de retorno explicito` agregar un espacio luego de los `:` para definir el tipo de retorno
-```kt
-//bad
-private fun getFilteredItems(filter: Filter) : List<MediaItem> {
-    
-}
-
-//good
-private fun getFilteredItems(filter: Filter): List<MediaItem> {
-    
-}
-
-```
-### Listas
-
-* Agregar un espacio luego de cada valor dentro de una lista
-```kt
-//bad
-val numbers = listOf(1,2,3,4,5,6)
-
-//good
-val numbers = listOf(1, 2, 3, 4, 5, 6)
-```
-## Saltos de linea
-* Agregar un salto de linea luego de cada bloque de función
-```kt
-//bad
-class MainViewModel : ViewModel() {
-    fun updateItems(filter: Filter = Filter.None) {
-        viewModelScope.launch {
-            // ..
-        }
+```kotlin
+class MyClass {
+  fun doSomething() {
+    if (someTest) {
+      // ...
+    } else {
+      // ...
     }
-    private fun getFilteredItems(filter: Filter): List<MediaItem> {
-        return MediaProvider.getItems().let { media ->
-            when (filter) {
-               // ..
-            }
-        }
-    }
-    fun onMediaItemClicked(mediaItem: MediaItem) {
-        // ..
-    }
-}
-
-//good
-class MainViewModel : ViewModel() {
-    fun updateItems(filter: Filter = Filter.None) {
-        viewModelScope.launch {
-            // ..
-        }
-    }
-
-    private fun getFilteredItems(filter: Filter): List<MediaItem> {
-        return MediaProvider.getItems().let { media ->
-            when (filter) {
-               // ..
-            }
-        }
-    }
-
-    fun onMediaItemClicked(mediaItem: MediaItem) {
-        // ..
-    }
-}
-
-```
-* Agregar un salto de linea despues de cada bloque de código
-```kt
-//bad
-fun onCreate(itemId: Int) {
-    if(itemId == 0) {
-        return
-    }
-    holder.itemView.setOnClickListener {
-        listener(itemId)
-    }
-}
-
-//good
-fun onCreate(itemId: Int) {
-    if(itemId == 0) {
-        return
-    }
-
-    holder.itemView.setOnClickListener {
-        listener(itemId)
-    }
-}
-```
-* Agregar saltos de linea para definiciones largas
-```kt
-//bad
-class MediaAdapter(items: List<Item> = emptyList(), users: List<User> = emptyList()) : RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
-
-}
-//good
-class MediaAdapter(items: List<Item> = emptyList(), users: List<User> = emptyList()) 
-    :RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
-
-}
-```
-* Agregar saltos de linea para muchos parametros.
-```kt
-//bad
-class MediaAdapter(items: List<Item> = emptyList(),
-    users: List<User> = emptyList(),
-    jobs: List<Job> = emptyList()) : RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
-
-}
-//good
-class MediaAdapter(
-    items: List<Item> = emptyList(),
-    users: List<User> = emptyList(),
-    jobs: List<Job> = emptyList()
-) : RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
-
+  }
 }
 ```
 
-## Número de lineas de código y parametros
-¿Se imaginan una Clase con mas de 2000 o 3000 lineas de código? Lo mas probable esque esta clase este violando mas de un principio SOLID y en particular el de responsabilidad unica. Las clases, archivos y funciones con muchas lineas de código son dificiles de leer y por lo tanto dificiles de mantener.
+Conditional statements are always required to be enclosed with braces, irrespective of the number of lines required.
 
-En nuestro esfuerzo de encontrar datos o estudios que respalden cuantas lineas como maximo debería tener una clase, archivo ó función, encontramos una opinion de un Google Developer Expert en Android - Antonio Leiva, Antonio nos comparte números referentes según su basta experiencia en el mundo Android, para esta guia lo llamaremos el metodo 666 y se establece de la siguiente forma:
+__BAD:__
 
-- Clases -> `600` lineas de código como máximo
-- Funciones -> `60` lineas de código como máximo
-- Parametros -> `6` parametros como máximo
+```kotlin
+if (someTest)
+  doSomething()
+if (someTest) doSomethingElse()
+```
 
-Desde luego estos números son relativos, si pasamos estos números se recomienda verificar si la clase, función o los numeros de parametros presentes pueden ser refactorizados. Recordemos que es buena practica mantener la responsabilidad única tanto en clases como funciones.
+__GOOD:__
+
+```kotlin
+if (someTest) {
+  doSomething()
+}
+if (someTest) { doSomethingElse() }
+```
+
+## When Statements
+
+Unlike `switch` statements in Java, `when` statements do not fall through. Separate cases using commas if they should be handled the same way. Always include the else case.
+
+__BAD:__
+
+```kotlin
+when (anInput) {
+  1 -> doSomethingForCaseOneOrTwo()
+  2 -> doSomethingForCaseOneOrTwo()
+  3 -> doSomethingForCaseThree()
+}
+```
+
+__GOOD:__
+
+```kotlin
+when (anInput) {
+  1, 2 -> doSomethingForCaseOneOrTwo()
+  3 -> doSomethingForCaseThree()
+  else -> println("No case satisfied")
+}
+```
+
+
+## Types 
+
+Always use Kotlin's native types when available. Kotlin is JVM-compatible so **[TODO: more info]**
+
+### Type Inference
+
+Type inference should be preferred where possible to explicitly declared types. 
+
+__BAD:__
+
+```kotlin
+val something: MyType = MyType()
+val meaningOfLife: Int = 42
+```
+
+__GOOD:__
+
+```kotlin
+val something = MyType()
+val meaningOfLife = 42
+```
+
+### Constants vs. Variables 
+
+Constants are defined using the `val` keyword, and variables with the `var` keyword. Always use `val` instead of `var` if the value of the variable will not change.
+
+*Tip*: A good technique is to define everything using `val` and only change it to `var` if the compiler complains!
+
+### Companion Objects
+
+** TODO: A bunch of stuff about companion objects **
+
+### Nullable Types
+
+Declare variables and function return types as nullable with `?` where a `null` value is acceptable.
+
+Use implicitly unwrapped types declared with `!!` only for instance variables that you know will be initialized before use, such as subviews that will be set up in `onCreate` for an Activity or `onCreateView` for a Fragment.
+
+When naming nullable variables and parameters, avoid naming them like `nullableString` or `maybeView` since their nullability is already in the type declaration.
+
+When accessing a nullable value, use the safe call operator if the value is only accessed once or if there are many nullables in the chain:
+
+```kotlin
+editText?.setText("foo")
+```
+
+
+## Language
+
+Use `en-US` English spelling. 🇺🇸
+
+__BAD:__
+
+```kotlin
+val colourName = "red"
+```
+
+__GOOD:__
+
+```kotlin
+val colorName = "red"
+```
