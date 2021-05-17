@@ -15,6 +15,7 @@
   + [Classes](#classes)
   + [Data Type Objects](#data-type-objects)
   + [Enum Classes](#enum-classes)
+  + [LiveData](#LiveData)
 - [Spacing](#spacing)
   + [Indentation](#indentation)
   + [Line Length](#line-length)
@@ -23,7 +24,6 @@
 - [Getters & Setters](#getters--setters)
 - [Brace Style](#brace-style)
 - [When Statements](#when-statements)
-- [Annotations](#annotations)
 - [Types](#types)
   + [Type Inference](#type-inference)
   + [Constants vs. Variables](#constants-vs-variables)
@@ -145,6 +145,64 @@ twitterHandle: String
 
 Exactly one class per source file, although inner classes are encouraged where scoping appropriate.
 
+If we want to use the arguments passed through the constructor, we can do it by defining the properties, these properties can be mutable or immutable and they help us to define in a simple way the famous Java getters and setters fields, but with a big difference, the simplicity.
+
+* Properties without modifying its get and set method
+
+__BAD:__
+
+```kt
+class Person(name: String, age: Int) {
+    val name: String
+    val age: Int
+
+    init {
+        this.name = name
+        this.age = age
+    }
+}
+```
+__BAD:__
+
+```kt
+class Person(name: String, age: Int) {
+    val name: String = name
+    val age: Int = age
+}
+```
+
+__GOOD:__
+
+```kt
+class Person(val name: String, val age: Int)
+
+```
+
+* Properties modifying its get and set method.
+
+You don't need to move all the arguments to the body of the class, only the one that will be modified.
+
+__BAD:__
+
+```kt
+class Person(name: String, age: Int) {
+    val age = age
+    var name = name
+        get() = "Su nombre es: $field"
+        set(value) { field = "Nuevo $value" }
+}
+```
+
+__GOOD:__
+```kt
+class Person(name: String, val age: Int) {
+    var name = name
+        get() = "Su nombre es: $field"
+        set(value) { field = "Nuevo $value" }
+}
+
+```
+
 ### Data Type Objects
 
 Prefer data classes for simple data holding objects.
@@ -170,7 +228,26 @@ data class Person(val name: String)
 Enum classes without methods may be formatted without line-breaks, as follows:
 
 ```kotlin
-private enum CompassDirection { EAST, NORTH, WEST, SOUTH }
+private enum class CompassDirection { EAST, NORTH, WEST, SOUTH }
+```
+
+### LiveData
+
+Declare a LiveData as public and associate it with a private MutableLiveData, it is true that you can work it defining and observing only a MutableLiveData, but this is not a good practice, since the logic and values ​​that are bound to that MutableLiveData could be modified by other classes from outside. Remember that LiveData are read only and are perfect to be observed by other classes.
+
+__BAD:__
+
+```kotlin
+val progressVisible: MutableLiveData<Boolean> by lazy {
+    MutableLiveData<Boolean>()
+}
+```
+
+__GOOD:__
+
+```kotlin
+private val _progressVisible = MutableLiveData<Boolean>()
+val progressVisible: LiveData<Boolean> get() = _progressVisible
 ```
 
 ## Spacing
